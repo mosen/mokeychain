@@ -2,7 +2,9 @@
 import os
 from Security import SecKeychainOpen, SecCopyErrorMessageString, SecKeychainLock, SecKeychainUnlock, SecKeychainGetPath, \
     SecKeychainGetStatus, kSecUnlockStateStatus, kSecReadPermStatus, kSecWritePermStatus, SecKeychainCopyDefault, \
-    SecItemCopyMatching, kSecMatchSearchList, kSecReturnRef, kSecClass, kSecClassCertificate
+    SecItemCopyMatching, kSecMatchSearchList, kSecReturnRef, kSecClass, kSecClassCertificate, SecKeychainSettings, \
+    SecKeychainCopySettings
+
 from certificate import KeychainCertificate
 
 class KeychainException(Exception):
@@ -51,6 +53,21 @@ class Keychain(object):
         """Determine whether this keychain is the default"""
         err, ref = SecKeychainCopyDefault(None)
         return self._ref == ref  # TODO may not actually work without calling Sec* to compare
+
+    @property
+    def settings(self):
+        """Retrieve the keychain settings which are returned as a tuple of:
+        version, lock_on_sleep, use_lock_interval, lock_interval"""
+
+        settings = SecKeychainSettings()
+        settings.version = 1
+        
+        err, settings = SecKeychainCopySettings(self._ref, settings)
+        if err is not None:
+            raise KeychainException(err)
+
+        return settings.version, settings.lockOnSleep, settings.useLockInterval, settings.lockInterval
+
 
     def lock(self):
         """Lock this keychain"""
