@@ -8,7 +8,8 @@ import sys
 import objc
 import CoreFoundation
 
-from Security import _metadata
+#from Security import _metadata
+from . import _metadata
 
 sys.modules['Security'] = mod = objc.ObjCLazyModule('Security',
     "com.apple.security",
@@ -21,4 +22,4 @@ sys.modules['Security'] = mod = objc.ObjCLazyModule('Security',
     }, ( CoreFoundation,))
 
 import sys
-del sys.modules['Security._metadata']
+#del sys.modules['Security._metadata']
