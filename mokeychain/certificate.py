@@ -1,8 +1,9 @@
 from Security import SecCertificateCopySerialNumber, SecCertificateCopyEmailAddresses, SecCertificateCopyData, \
-    SecCertificateCopyPublicKey, SecCertificateCopyCommonName, SecCertificateCopySubjectSummary, SecKeyDecrypt
+    SecCertificateCopyPublicKey, SecCertificateCopyCommonName, SecCertificateCopySubjectSummary, SecKeyDecrypt, \
+    SecCertificateCopyLongDescription
 
 
-class KeychainKey(object):
+class Key(object):
     """Class representing an asymmetric key, see SecKeyRef"""
     def __init__(self, ref=None):
         if ref:
@@ -20,7 +21,7 @@ class KeychainKey(object):
         pass
 
 
-class KeychainCertificate(object):
+class Certificate(object):
 
     def __init__(self, ref):
         self._ref = ref
@@ -58,7 +59,7 @@ class KeychainCertificate(object):
         if err is not None:
             raise Exception('Cant get public key')
 
-        return KeychainKey(ref=key_ref)
+        return Key(ref=key_ref)
 
     @property
     def cn(self):
@@ -74,6 +75,12 @@ class KeychainCertificate(object):
         """Get a human readable summary of the certificate"""
         summary = SecCertificateCopySubjectSummary(self._ref)
         return summary
+
+    @property
+    def long_description(self):
+        """Get a long description of the certificate"""
+        long_description, err = SecCertificateCopyLongDescription(None, self._ref, None)
+        return long_description
 
     def __str__(self):
         """Return the string representation as the summary"""

@@ -26,12 +26,17 @@ def create(path, password=None):
         password: The password used to secure the keychain. This may be None if you want to prompt the user.
     Returns:
         An instance of Keychain
+    Raises:
+        KeychainException if keychain cannot be created
     """
     pass
-    # if password is None:
-    #     err, ref = SecKeychainCreate(path, 0, None, True, None, None)
-    # else:
-    #     err, ref = SecKeychainCreate(path, None, password, False, None, None)
+    if password is None:
+        err, ref = SecKeychainCreate(path, 0, None, True, None, None)
+    else:
+        err, ref = SecKeychainCreate(path, None, password, False, None, None)
+
+    if err is not None:
+        raise KeychainException(err)
 
 
 class Keychain(object):
