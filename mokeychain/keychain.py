@@ -27,8 +27,12 @@ def create(path, password=None):
     Returns:
         An instance of Keychain
     """
-    if password is None:
-        err, ref = SecKeychainCreate(path, 0, None, True, None, None)
+    pass
+    # if password is None:
+    #     err, ref = SecKeychainCreate(path, 0, None, True, None, None)
+    # else:
+    #     err, ref = SecKeychainCreate(path, None, password, False, None, None)
+
 
 class Keychain(object):
     """Keychain represents a high level object view of a keychain.
