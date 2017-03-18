@@ -13,8 +13,8 @@ class TestKeychain(object):
     def setup(self):
         self._tempdir = tempfile.mkdtemp('mokeychain')
 
-    def test_keychain_create_interactive(self):
-        k = create(os.path.join(self._tempdir, 'test.keychain'))
+    # def test_keychain_create_interactive(self):
+    #     k = create(os.path.join(self._tempdir, 'test.keychain'))
 
     def test_keychain_create(self):
         k = create(os.path.join(self._tempdir, 'test.keychain'), 'password')

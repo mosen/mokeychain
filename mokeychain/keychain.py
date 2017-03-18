@@ -33,7 +33,7 @@ def create(path, password=None):
     if password is None:
         err, ref = SecKeychainCreate(path, 0, None, True, None, None)
     else:
-        err, ref = SecKeychainCreate(path, None, password, False, None, None)
+        err, ref = SecKeychainCreate(path, len(password), password, False, None, None)
 
     if err is not None:
         raise KeychainException(err)
